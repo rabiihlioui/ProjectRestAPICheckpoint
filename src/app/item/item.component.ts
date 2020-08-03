@@ -24,7 +24,7 @@ export class ItemComponent implements OnInit {
 
   initiateItem() {
     this.initiatePers()
-    this.pic = this.pers.picture
+    //this.pic = this.pers.picture
     this.name = this.pers.name
     this.firstName = this.pers.firstname
   }

@@ -19,7 +19,7 @@ export class HiredCvItemComponent implements OnInit,OnChanges {
   }
 
   ngOnChanges(){
-    this.pic = this.person.picture
+    //this.pic = this.person.picture
     this.name = this.person.name
     this.firstName = this.person.firstname
   }

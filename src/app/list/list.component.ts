@@ -19,6 +19,7 @@ export class ListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.cvService.ngOnInit();
     this.initializeIds()
   }
 

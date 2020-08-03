@@ -1,13 +1,16 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 
 import { Person } from '../person';
 import { NgForm } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+
+const API_LINK = 'https://immense-citadel-91115.herokuapp.com/api/personnes';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CvService {
+export class CvService implements OnInit {
 
   name: string
 
@@ -15,22 +18,30 @@ export class CvService {
 
   showDetailsSubject = new Subject<boolean>();
 
-  pers = new Person(0,'','','',0,0,'','../../assets/images/developer.png','../../assets/images/coverDev.png')
+  // pers = new Person(0,'','','',0,0,'','../../assets/images/developer.png','../../assets/images/coverDev.png')
 
-  pers1 = new Person(1,'Rabii','Hlioui','rabiihlioui@gmail.com',60,15786937,'Software Engineer','../../assets/images/rabiiHlioui.png','../../assets/images/coverRabii.png')
-  pers2 = new Person(2,'Lionel','Messi','lionelmessi@yahoo.fr',120,94557937,'Footballer','../../assets/images/lionelMessi.png','../../assets/images/coverLionel.png')
-  pers3 = new Person(3,'Emna','Mejri','mejriemna@yandex.com',30,63339411,'Secretary','../../assets/images/imenMejri.png','../../assets/images/coverImen.png')
-  pers4 = new Person(4,'Slimen','Labyedh','slimenfreud@hotmail.com',40,76945137,'Psychotherapist','../../assets/images/slimenLabyedh.png','../../assets/images/coverSlimen.png')
+  // pers1 = new Person(1,'Rabii','Hlioui','rabiihlioui@gmail.com',60,15786937,'Software Engineer','../../assets/images/rabiiHlioui.png','../../assets/images/coverRabii.png')
+  // pers2 = new Person(2,'Lionel','Messi','lionelmessi@yahoo.fr',120,94557937,'Footballer','../../assets/images/lionelMessi.png','../../assets/images/coverLionel.png')
+  // pers3 = new Person(3,'Emna','Mejri','mejriemna@yandex.com',30,63339411,'Secretary','../../assets/images/imenMejri.png','../../assets/images/coverImen.png')
+  // pers4 = new Person(4,'Slimen','Labyedh','slimenfreud@hotmail.com',40,76945137,'Psychotherapist','../../assets/images/slimenLabyedh.png','../../assets/images/coverSlimen.png')
 
   cvList = [
-    this.pers,
-    this.pers1,
-    this.pers2,
-    this.pers3,
-    this.pers4
+    // this.pers,
+    // this.pers1,
+    // this.pers2,
+    // this.pers3,
+    // this.pers4
   ]
 
-  constructor() { }
+  constructor(
+    private http: HttpClient
+  ) { }
+
+  ngOnInit() {
+    this.getPersons().subscribe(
+      (persons) => this.cvList = persons
+    )
+  }
 
   retrievePersById(id: number) {
     const long = this.cvList.length;
@@ -59,7 +70,7 @@ export class CvService {
 
   addCV(person: Person) {
     person.id = this.cvList[this.cvList.length - 1].id + 1
-    person.picture = '../../assets/images/newPerson.png'
+    //person.picture = '../../assets/images/newPerson.png'
     this.cvList.push(person); 
   }
 
@@ -69,6 +80,10 @@ export class CvService {
 
   showDetailsBlock(showFlag: boolean) {
     this.showDetailsSubject.next(showFlag)
+  }
+
+  getPersons(): Observable<Person[]>{
+    return this.http.get<Person[]>(API_LINK);
   }
 
 }
